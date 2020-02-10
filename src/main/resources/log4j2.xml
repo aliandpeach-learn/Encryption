@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="off" monitorInterval="1800">
+    <properties>
+        <property name="LOG_HOME">${sys:encypttool.logs.home}</property>
+        <property name="ERROR_LOG_FILE_NAME">error</property>
+        <property name="DEBUG_LOG_FILE_NAME">debug</property>
+        <property name="INFO_LOG_FILE_NAME">info</property>
+    </properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %-5p (%F:%L) - %m%n"/>
+        </Console>
+        <RollingRandomAccessFile name="rsa"
+                                 fileName="${LOG_HOME}/rsa.log"
+                                 filePattern="${LOG_HOME}/rsa.log.%d{yyyy-MM-dd}.gz">
+            <PatternLayout
+                    pattern="%d %-5p (%F:%L) - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="main"
+                                 fileName="${LOG_HOME}/main.log"
+                                 filePattern="${LOG_HOME}/main.log.%d{yyyy-MM-dd}.gz">
+            <PatternLayout
+                    pattern="%d %-5p (%F:%L) - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="component"
+                                 fileName="${LOG_HOME}/component.log"
+                                 filePattern="${LOG_HOME}/component.log.%d{yyyy-MM-dd}.gz">
+            <PatternLayout
+                    pattern="%d %-5p (%F:%L) - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <logger name="rsa" level="info" includeLocation="true" additivity="false">
+            <appender-ref ref="rsa"/>
+            <appender-ref ref="Console"/>
+        </logger>
+        <logger name="main" level="info" includeLocation="true" additivity="false">
+            <appender-ref ref="main"/>
+            <appender-ref ref="Console"/>
+        </logger>
+        <logger name="component" level="info" includeLocation="true" additivity="false">
+            <appender-ref ref="component"/>
+            <appender-ref ref="Console"/>
+        </logger>
+
+        <root level="info" includeLocation="true">
+            <appender-ref ref="Console"/>
+        </root>
+    </Loggers>
+</Configuration>
