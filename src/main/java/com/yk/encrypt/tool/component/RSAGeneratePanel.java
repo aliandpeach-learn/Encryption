@@ -44,16 +44,26 @@ public class RSAGeneratePanel extends JPanel {
                 if (key.get() > 10) {
                     KeyPair keyPair = RSA2048Util.generateRSA2048(mouse);
                     flag = false;
+                    JOptionPane.showMessageDialog(null, "密钥已经生成，请选择文件夹保存", "",
+                            JOptionPane.INFORMATION_MESSAGE);
                     JFileChooser fileChooser = new JFileChooser();
-                    FileNameExtensionFilter filter = new FileNameExtensionFilter("private.key", "key");
-                    fileChooser.setFileFilter(filter);
+                    fileChooser.setFileSelectionMode(JFileChooser.SAVE_DIALOG | JFileChooser.DIRECTORIES_ONLY);
+//                    FileNameExtensionFilter filter = new FileNameExtensionFilter(".key", "key");
+//                    fileChooser.setFileFilter(filter);
+                    fileChooser.setDialogTitle("选择文件夹");
                     int option = fileChooser.showSaveDialog(null);
                     if (option == JFileChooser.APPROVE_OPTION) {    //假如用户选择了保存
                         File file = fileChooser.getSelectedFile();
                         try {
-                            FileWriter fw = new FileWriter(file);
-                            fw.write(new BigInteger(1, keyPair.getPrivate().getEncoded()).toString(16));
-                            fw.close();
+                            FileWriter fwpri = new FileWriter(file.getCanonicalPath() + File.separator + "private.key");
+                            FileWriter fwpub = new FileWriter(file.getCanonicalPath() + File.separator + "public.key");
+                            fwpri.write(new BigInteger(1, keyPair.getPrivate().getEncoded()).toString(16));
+                            fwpri.close();
+                            fwpub.write(new BigInteger(1, keyPair.getPublic().getEncoded()).toString(16));
+                            fwpub.close();
+
+                            JOptionPane.showMessageDialog(null, "保存成功", "保存成功",
+                                    JOptionPane.INFORMATION_MESSAGE);
                         } catch (IOException exx) {
                             exx.printStackTrace();
                         }
